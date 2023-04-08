@@ -1,0 +1,35 @@
+#
+#config:
+#    name: "demo testsuite"
+#    variables:
+#        device_sn: "XYZ"
+#    base_url: "http://127.0.0.1:5000"
+#
+#testcases:
+#-
+#    name: call demo_testcase with data 1
+#    testcase: path/to/demo_testcase.yml
+#    variables:
+#        device_sn: $device_sn
+#-
+#    name: call demo_testcase with data 2
+#    testcase: path/to/demo_testcase.yml
+#    variables:
+#        device_sn: $device_sn
+config:
+    name: "接口批量执行"
+
+testcases:
+-
+    name: "test_删除角色"
+    parameters:
+     roleID: ${P(data/delete_role.csv)}
+    testcase: testcases/test_删除角色.yml
+      #{"roleID": [{"roleID": "239237923924934"}, {"roleID": "320938028308203"}, {"roleID": "32u93u29u392u3u203u2"}]}
+
+
+-
+    name: "接口依赖执行"
+    testcase: testcases/test_删除角色接口依赖.yml
+
+

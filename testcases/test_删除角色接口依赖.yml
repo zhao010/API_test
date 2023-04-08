@@ -1,0 +1,43 @@
+config:
+    name: testcase description
+    variables:
+      author: ${ENV(author)}
+teststeps:
+-   name: /api/v1/auth/DelRole
+    request:
+        headers:
+            authorization: $author
+        json:
+          pageIdx: 1
+          pageSize: 10
+          sort: -1
+        method: POST
+        url: https://192.168.31.105/api/v1/auth/RolesList
+        verify: False
+    #获取用户ID，给下个接口用
+    extract:
+      role: content.list.0.id
+    validate:
+    - eq: ["status_code", 200]
+    - eq: [content.list.0.id, $role]
+
+
+
+    teardown_hooks:
+    - ${sleep(10)}
+
+
+-   name: /api/v1/auth/DelRole
+    request:
+        headers:
+            authorization: $author
+        json:
+          roleID: $role
+        method: POST
+        url: https://192.168.31.105/api/v1/auth/DelRole
+        verify: False
+    validate:
+    - eq: ["status_code", 200]
+    -  eq:
+       - content.message
+       - 该角色不存在
